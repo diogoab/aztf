@@ -16,7 +16,7 @@ steps:
 
 
 - script: |
-    python -m unittest discover
+    python3.12 -m unittest discover
   displayName: 'Run Tests'
 
 - task: ArchiveFiles@2
