@@ -4,11 +4,16 @@ trigger:
 pool:
   name: AMZLINUX
 
+strategy:
+  matrix:
+    Python311:
+      python.version: '3.11'
+ 
 steps:
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.x'
-    addToPath: true
+    versionSpec: '$(python.version)'
+  displayName: 'Use Python $(python.version)'
 
 - script: |
     python3 -m pip install --upgrade pip
