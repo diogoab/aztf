@@ -7,16 +7,16 @@ pool:
 steps:
 - script: |
     python3.12 --version
-  displayName: 'Verificar versão do Python 3.12'
+  displayName: 'Check Python version 3.12'
 
 - script: |
     python3.12 -m pip install --upgrade pip
     if [ -f requirements.txt ]; then python3.12 -m pip install -r requirements.txt; fi
-  displayName: 'Instalar dependências'
+  displayName: 'Install dependencies'
 
 
 - script: |
-    python3.12 -m unittest discover
+    python3.12 -m unittest discover -s tests -p '*_test.py'
   displayName: 'Run Tests'
 
 - task: ArchiveFiles@2
