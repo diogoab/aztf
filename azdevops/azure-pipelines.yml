@@ -1,0 +1,36 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'  
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
+
+- script: |
+    python -m pip install --upgrade pip
+    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+  displayName: 'Install Dependencies'
+
+- script: |
+    python -m unittest discover
+  displayName: 'Run Tests'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/python-app.zip'
+    replaceExistingArchive: true
+  displayName: 'Package Code'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'  
+    ArtifactName: 'python-app-artifact'  
+    publishLocation: 'Container'
+  displayName: 'Publish Artifacts'
