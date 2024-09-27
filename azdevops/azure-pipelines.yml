@@ -7,7 +7,7 @@ pool:
 steps:
 - script: |
     python3.12 --version
-  displayName: 'Check Python version 3.12'
+  displayName: 'Check Python Version 3.12'
 
 - script: |
     python3.12 -m pip install --upgrade pip
