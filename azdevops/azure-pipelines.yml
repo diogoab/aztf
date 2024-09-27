@@ -14,6 +14,9 @@ steps:
     if [ -f requirements.txt ]; then python3.12 -m pip install -r requirements.txt; fi
   displayName: 'Install dependencies'
 
+- script: |
+    ls -la $(System.DefaultWorkingDirectory)
+  displayName: 'List files'
 
 - script: |
     python3.12 -m unittest discover -p '*_test.py'
