@@ -15,11 +15,7 @@ steps:
   displayName: 'Install dependencies'
 
 - script: |
-    ls -la $(System.DefaultWorkingDirectory)
-  displayName: 'List files'
-
-- script: |
-    python3.12 -m unittest discover -p '*_test.py'
+    python3.12 -m unittest discover -s $(System.DefaultWorkingDirectory)/azdevops -p '*_test.py'
   displayName: 'Run Tests'
 
 - task: ArchiveFiles@2
