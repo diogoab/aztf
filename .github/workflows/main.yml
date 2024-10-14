@@ -1,0 +1,46 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_docker_image:
+    runs-on: ubuntu-latest
+    environment: develop
+    steps:
+      - name: write a file
+        env:
+          ECR_REPOSITORY_URI: ${{ vars.REPOSITORY_URI }}
+        run: |
+          echo ${{ github.ref_name }} > target_branch.txt
+      - name: Save target branch
+        uses: actions/upload-artifact@v4
+        with:
+          name: target_branch
+          path: target_branch.txt
+
+  deploy_argocd:
+    runs-on: ubuntu-latest
+    needs: build_docker_image
+    environment: develop
+    steps:
+      - name: Download target branch
+        uses: actions/download-artifact@v4
+        with:
+          name: target_branch
+
+      - name: Set up Git
+        run: |
+          git config --global user.email "devops"
+          git config --global user.name "devops"
+
+      - name: Update Kubernetes Deployment
+        run: |
+          TARGET_BRANCH=$(cat target_branch.txt)
+          echo $TARGET_BRANCH
